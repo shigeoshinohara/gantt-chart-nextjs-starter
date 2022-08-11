@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { monthDiff } from './dateFunctions';
+import { monthDiff } from '../../helpers/dateFunctions';
 
 export default function TimeTable() {
   // for dynamic css styling
