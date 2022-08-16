@@ -6,7 +6,7 @@ export default function TimeTable() {
   const ganttTimePeriod = {
     display: 'grid',
     gridAutoFlow: 'column',
-    gridAutoColumns: 'minmax(35px, 1fr)',
+    gridAutoColumns: 'minmax(30px, 1fr)',
     outline: '0.5px solid var(--color-outline)',
     textAlign: 'center',
     height: 'var(--cell-height)',
@@ -19,11 +19,12 @@ export default function TimeTable() {
   const ganttTimePeriodCell = {
     position: 'relative',
     outline: '0.5px solid var(--color-outline)',
+    marginTop: '0.5px',
   };
 
   const taskDuration = {
     position: 'absolute',
-    height: 'calc(var(--cell-height) - 0.5px)',
+    height: 'calc(var(--cell-height) - 1px)',
     zIndex: '1',
     background:
       'linear-gradient(90deg, var(--color-primary-light) 0%, var(--color-primary-dark) 100%)',
@@ -66,6 +67,7 @@ export default function TimeTable() {
           gridColumn: '1/-1',
           display: 'grid',
           gridTemplateColumns: `repeat(${numMonths}, 1fr)`,
+          paddingLeft: '0.5px',
         }}
       >
         {taskRows}
