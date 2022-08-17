@@ -88,11 +88,7 @@ export default function TimeRange() {
           display: flex;
           align-items: center;
           font-size: 14px;
-          margin: 0.5rem 0;
-        }
-
-        h2 {
-          font-size: 1.5rem;
+          margin: 0.75rem 0;
         }
 
         fieldset {
@@ -105,14 +101,7 @@ export default function TimeRange() {
         }
 
         select {
-          padding: 5px 7px;
-          margin: 8px 0;
-          display: inline-block;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-          font-family: 'Montserrat', sans-serif;
-          font-size: 13px;
+          margin-top: 0.5rem;
         }
       `}</style>
     </div>

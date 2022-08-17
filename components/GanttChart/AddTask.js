@@ -26,29 +26,10 @@ export default function AddTask() {
           box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.05);
         }
 
-        h2 {
-          font-size: 1.5rem;
-        }
-
-        form {
-          padding: 1rem;
-        }
-
-        form > * {
-          display: flex;
-          align-items: center;
-        }
-
         input {
           height: var(--cell-height);
-          padding: 5px 7px;
-          margin: 1rem 0;
-          display: inline-block;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-          font-family: 'Montserrat', sans-serif;
-          font-size: 13px;
+          margin-top: 21px;
+          margin-bottom: 21px;
         }
       `}</style>
     </form>
