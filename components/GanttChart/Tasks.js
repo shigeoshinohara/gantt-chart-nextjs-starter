@@ -1,6 +1,19 @@
 import { useEffect, useRef } from 'react';
 
 export default function Tasks({ tasks, setTasks, setTaskDurations }) {
+  const handleDelete = (e) => {
+    const idNum = parseInt(e.target.getAttribute('data-task-id'));
+    const newTasks = tasks.filter((task) => task.id !== idNum);
+    setTasks(newTasks);
+
+    setTaskDurations((prevState) => {
+      const newTaskDurations = prevState.filter(
+        (taskDuration) => taskDuration.task !== idNum
+      );
+      return newTaskDurations;
+    });
+  };
+
   return (
     <div id="gantt-grid-container__tasks">
       <div className="gantt-task-row"></div>
@@ -13,7 +26,11 @@ export default function Tasks({ tasks, setTasks, setTaskDurations }) {
             className={'gantt-task-row'}
           >
             <input type="text" data-task-id={task?.id} value={task?.name} />
-            <button type={'button'} data-task-id={task?.id}>
+            <button
+              type={'button'}
+              data-task-id={task?.id}
+              onClick={handleDelete}
+            >
               X
             </button>
           </div>
