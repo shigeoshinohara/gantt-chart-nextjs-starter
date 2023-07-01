@@ -6,6 +6,18 @@ export default function Tasks({ tasks, setTasks, setTaskDurations }) {
       <div className="gantt-task-row"></div>
       <div className="gantt-task-row"></div>
       <div className="gantt-task-row"></div>
+      {tasks &&
+        tasks.map((task, i) => (
+          <div
+            key={`${i}-${task?.id}-${task.name}`}
+            className={'gantt-task-row'}
+          >
+            <input type="text" data-task-id={task?.id} value={task?.name} />
+            <button type={'button'} data-task-id={task?.id}>
+              X
+            </button>
+          </div>
+        ))}
 
       <style jsx>{`
         #gantt-grid-container__tasks {
