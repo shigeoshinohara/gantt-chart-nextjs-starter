@@ -1,6 +1,6 @@
 import { months } from '../../constants';
 
-export default function TimeRange() {
+export default function TimeRange({ timeRange, setTimeRange }) {
   // add date selector values
   let monthsOptions = [];
   for (let i = 0; i < months.length; i++) {
@@ -12,7 +12,7 @@ export default function TimeRange() {
   }
 
   const yearsOptions = [];
-  for (let i = 2022; i <= 2050; i++) {
+  for (let i = 2023; i <= 2050; i++) {
     yearsOptions.push(
       <option key={i} value={i}>
         {i}

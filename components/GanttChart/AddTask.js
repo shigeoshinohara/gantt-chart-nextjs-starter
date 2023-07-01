@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AddButton from './AddButton';
 
-export default function AddTask() {
+export default function AddTask({ setTasks }) {
   const [task, setTask] = useState('');
 
   function onChange(e) {

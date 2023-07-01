@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function Tasks() {
+export default function Tasks({ tasks, setTasks, setTaskDurations }) {
   return (
     <div id="gantt-grid-container__tasks">
       <div className="gantt-task-row"></div>

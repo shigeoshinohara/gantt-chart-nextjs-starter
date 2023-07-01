@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { client } from '../../utils/fetchWrapper';
 import { error } from 'next/dist/build/output/log';
+import Grid from './Grid';
+import Tasks from './Tasks';
+import TimeTable from './TimeTable';
+import Settings from './Settings';
+import AddTask from './AddTask';
+import AddTaskDuration from './AddTaskDuration';
+import TimeRange from './TimeRange';
 export default function GanttChart() {
   const [tasks, setTasks] = useState(null);
   const [taskDurations, setTaskDurations] = useState(null);
@@ -39,6 +46,24 @@ export default function GanttChart() {
           padding: 1rem;
         }
       `}</style>
+      <Grid>
+        <Tasks
+          tasks={tasks}
+          setTasks={setTasks}
+          setTaskDurations={setTaskDurations}
+        />
+        <TimeTable
+          timeRange={timeRange}
+          tasks={tasks}
+          taskDurations={taskDurations}
+          setTaskDurations={setTaskDurations}
+        />
+      </Grid>
+      <Settings>
+        <AddTask setTasks={setTasks} />
+        <AddTaskDuration tasks={tasks} setTaskDurations={setTaskDurations} />
+        <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
+      </Settings>
     </div>
   );
 }
