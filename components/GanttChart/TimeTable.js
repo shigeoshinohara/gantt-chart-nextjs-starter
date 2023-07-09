@@ -1,6 +1,13 @@
 import { useState } from 'react';
-import { monthDiff } from '../../helpers/dateFunctions';
-
+import {
+  monthDiff,
+  getDaysInMonth,
+  getDayOfWeek,
+  createFormattedDateFromStr,
+  createFormattedDateFromDate,
+  dayDiff,
+} from '../../helpers/dateFunctions';
+import { months } from '../../constants';
 export default function TimeTable({
   timeRange,
   tasks,
@@ -57,6 +64,119 @@ export default function TimeTable({
   let weekRow = [];
   let taskRows = [];
   let taskRow = [];
+
+  for (let i = 0; i < numMonths; i++) {
+    // create month rows
+    monthRows.push(
+      <div key={i} style={{ ...ganttTimePeriod, outline: 'none' }}>
+        <span style={ganttTimePeriodSpan}>
+          {months[month.getMonth()] + ' ' + month.getFullYear()}
+        </span>
+      </div>
+    );
+
+    // create day and week rows
+    const numDays = getDaysInMonth(month.getFullYear(), month.getMonth() + 1);
+    const currYear = month.getFullYear();
+    const currMonth = month.getMonth() + 1;
+    console.log('numDays=', numDays);
+    for (let j = 1; j <= numDays; j++) {
+      dayRow.push(
+        <div key={j} style={{ ...ganttTimePeriod, outline: 'none' }}>
+          <span style={ganttTimePeriodSpan}>{j}</span>
+        </div>
+      );
+
+      weekRow.push(
+        <div key={j} style={{ ...ganttTimePeriod, outline: 'none' }}>
+          <span style={{ ...ganttTimePeriodSpan, color: '#3F455B' }}>
+            {getDayOfWeek(currYear, currMonth - 1, j - 1)}
+          </span>
+        </div>
+      );
+    }
+
+    dayRows.push(
+      <div key={i} style={{ ...ganttTimePeriod, outline: 'none' }}>
+        {dayRow}
+      </div>
+    );
+
+    weekRows.push(
+      <div key={i} style={{ ...ganttTimePeriod, outline: 'none' }}>
+        {weekRow}
+      </div>
+    );
+
+    dayRow = [];
+    weekRow = [];
+    month.setMonth(month.getMonth() + 1);
+  }
+
+  // create task rows
+  if (tasks) {
+    tasks.forEach((task) => {
+      let mnth = new Date(startMonth);
+      for (let i = 0; i < numMonths; i++) {
+        const curYear = mnth.getFullYear();
+        const curMonth = mnth.getMonth() + 1;
+
+        const numDays = getDaysInMonth(curYear, curMonth);
+
+        for (let j = 1; j <= numDays; j++) {
+          // color weekend cells differently
+          const dayOfTheWeek = getDayOfWeek(curYear, curMonth - 1, j - 1);
+
+          // add task and date data attributes
+          const formattedDate = createFormattedDateFromStr(
+            curYear,
+            curMonth,
+            j
+          );
+
+          taskRow.push(
+            <div
+              key={`${task.id}-${j}`}
+              style={{
+                ...ganttTimePeriodCell,
+                backgroundColor:
+                  dayOfTheWeek === 'S' ? 'var(--color-tertiary)' : '#fff',
+              }}
+              data-task={task?.id}
+              data-date={formattedDate}
+            >
+              {taskDurations.map((el, i) => {
+                if (el?.task === task?.id && el?.start === formattedDate) {
+                  return (
+                    <div
+                      key={`${i}-${el?.id}`}
+                      tabIndex="0"
+                      style={{
+                        ...taskDuration,
+                        width: `calc(${dayDiff(
+                          el?.start,
+                          el?.end
+                        )} * 100% - 1px)`,
+                      }}
+                    ></div>
+                  );
+                }
+              })}
+            </div>
+          );
+        }
+
+        taskRows.push(
+          <div key={`${i}-${task?.id}`} style={ganttTimePeriod}>
+            {taskRow}
+          </div>
+        );
+
+        taskRow = [];
+        mnth.setMonth(mnth.getMonth() + 1);
+      }
+    });
+  }
 
   return (
     <div
