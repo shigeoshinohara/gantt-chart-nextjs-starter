@@ -14,6 +14,51 @@ export default function TimeTable({
   taskDurations,
   setTaskDurations,
 }) {
+  const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
+
+  const handleDragStart = (taskDurationId) => {
+    console.log(taskDurationId);
+    setTaskDurationElDraggedId(taskDurationId);
+  };
+
+  const onTaskDurationDrop = (e) => {
+    const targetCell = e.target;
+
+    if (!targetCell.hasAttribute('draggable')) {
+      // find task
+      const taskDuration = taskDurations.filter(
+        (taskDuration) => taskDuration.id === taskDurationElDraggedId
+      )[0];
+
+      const dataTask = targetCell.getAttribute('data-task');
+      const dataDate = targetCell.getAttribute('data-date');
+
+      const daysDuration = dayDiff(taskDuration.start, taskDuration.end);
+
+      // get new task values
+      // get start, calc end using daysDuration - make Date objects - change taskDurations
+      const newTask = parseInt(dataTask);
+      const newStartDate = new Date(dataDate);
+      let newEndDate = new Date(dataDate);
+      newEndDate.setDate(newEndDate.getDate() + daysDuration - 1);
+
+      // update taskDurations
+      taskDuration.task = newTask;
+      taskDuration.start = createFormattedDateFromDate(newStartDate);
+      taskDuration.end = createFormattedDateFromDate(newEndDate);
+
+      const newTaskDurations = taskDurations.filter(
+        (taskDuration) => taskDuration.id !== taskDurationElDraggedId
+      );
+      newTaskDurations.push(taskDuration);
+
+      // update state (if data on backend - make API request to update data)
+      setTaskDurations(newTaskDurations);
+    }
+
+    setTaskDurationElDraggedId(null);
+  };
+
   // for dynamic css styling
   const ganttTimePeriod = {
     display: 'grid',
@@ -156,6 +201,7 @@ export default function TimeTable({
               }}
               data-task={task?.id}
               data-date={formattedDate}
+              onDrop={onTaskDurationDrop}
             >
               {taskDurations.map((el, i) => {
                 if (el?.task === task?.id && el?.start === formattedDate) {
@@ -163,6 +209,8 @@ export default function TimeTable({
                     <div
                       key={`${i}-${el?.id}`}
                       onKeyDown={(e) => deleteTaskDuration(e, el?.id)}
+                      draggable="true"
+                      onDragStart={() => handleDragStart(el?.id)}
                       tabIndex="0"
                       style={{
                         ...taskDuration,
@@ -170,6 +218,8 @@ export default function TimeTable({
                           el?.start,
                           el?.end
                         )} * 100% - 1px)`,
+                        opacity:
+                          taskDurationElDraggedId === el?.id ? '0.5' : '1',
                       }}
                     ></div>
                   );
@@ -207,6 +257,7 @@ export default function TimeTable({
           gridTemplateColumns: `repeat(${numMonths}, 1fr)`,
           paddingLeft: '0.5px',
         }}
+        onDragOver={(e) => e.preventDefault()}
       >
         {taskRows}
       </div>
