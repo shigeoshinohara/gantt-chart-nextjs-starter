@@ -22,6 +22,26 @@ export default function TimeRange({ timeRange, setTimeRange }) {
 
   function onChange(e) {
     const { value, id } = e.target;
+    if (id === 'from-select-month') {
+      setTimeRange((prevState) => {
+        return { ...prevState, fromSelectMonth: value };
+      });
+    }
+    if (id === 'from-select-year') {
+      setTimeRange((prevState) => {
+        return { ...prevState, fromSelectYear: value };
+      });
+    }
+    if (id === 'to-select-month') {
+      setTimeRange((prevState) => {
+        return { ...prevState, toSelectMonth: value };
+      });
+    }
+    if (id === 'to-select-year') {
+      setTimeRange((prevState) => {
+        return { ...prevState, toSelectYear: value };
+      });
+    }
   }
 
   return (
@@ -33,7 +53,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
           <select
             id="from-select-month"
             name="from-select-month"
-            value={null}
+            value={timeRange.fromSelectMonth}
             onChange={onChange}
           >
             {monthsOptions}
@@ -41,7 +61,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
           <select
             id="from-select-year"
             name="from-select-year"
-            value={null}
+            value={timeRange.fromSelectYear}
             onChange={onChange}
             style={{ marginLeft: '5px' }}
           >
@@ -54,7 +74,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
           <select
             id="to-select-month"
             name="to-select-month"
-            value={null}
+            value={timeRange.toSelectMonth}
             onChange={onChange}
           >
             {monthsOptions}
@@ -62,7 +82,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
           <select
             id="to-select-year"
             name="to-select-year"
-            value={null}
+            value={timeRange.toSelectYear}
             onChange={onChange}
             style={{ marginLeft: '5px' }}
           >
