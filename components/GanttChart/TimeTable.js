@@ -45,6 +45,18 @@ export default function TimeTable({
     cursor: 'move',
   };
 
+  const deleteTaskDuration = (e, id) => {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      // update taskDurations
+      const newTaskDurations = taskDurations.filter(
+        (taskDuration) => taskDuration.id !== id
+      );
+
+      // update state
+      setTaskDurations(newTaskDurations);
+    }
+  };
+
   // creating rows
   const startMonth = new Date(
     parseInt(timeRange.fromSelectYear),
@@ -150,6 +162,7 @@ export default function TimeTable({
                   return (
                     <div
                       key={`${i}-${el?.id}`}
+                      onKeyDown={(e) => deleteTaskDuration(e, el?.id)}
                       tabIndex="0"
                       style={{
                         ...taskDuration,
